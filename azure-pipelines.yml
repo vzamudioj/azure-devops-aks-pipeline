@@ -21,6 +21,10 @@ steps:
   inputs:
     secureFile: 'azure_rsa.pub'
 
+- task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
+  inputs:
+    terraformVersion: '1.6.6'
+
 - task: TerraformCLI@2
   inputs:
     command: 'init'
