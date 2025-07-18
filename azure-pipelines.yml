@@ -8,8 +8,7 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
-container:
-  image: hashicorp/terraform:1.6.6
+
 
 steps:
 
