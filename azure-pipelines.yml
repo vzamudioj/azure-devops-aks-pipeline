@@ -31,7 +31,6 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)/kubernetes'
     backendType: 'azurerm'
     backendServiceArm: 'resource-manager-service-connection'
-    ensureBackend: true
     backendAzureRmResourceGroupName: 'terraform-backend-rg'
     backendAzureRmResourceGroupLocation: 'westeurope'
     backendAzureRmStorageAccountName: 'stacctvzamudioj'
@@ -39,4 +38,7 @@ steps:
     backendAzureRmKey: 'kubernetes-dev.tfstate'
     allowTelemetryCollection: true
     commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
+
+
+
     
