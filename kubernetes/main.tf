@@ -68,7 +68,7 @@ data "azurerm_kubernetes_cluster" "this" {
   resource_group_name = azurerm_resource_group.resource_group.name
 
   # Comment this out if you get: Error: Kubernetes cluster unreachable 
-  depends_on = [azurerm_kubernetes_cluster.this]
+  # depends_on = [azurerm_kubernetes_cluster.this]
 }
 
 provider "helm" {
