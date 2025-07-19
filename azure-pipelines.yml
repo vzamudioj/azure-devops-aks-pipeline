@@ -30,7 +30,7 @@ steps:
     command: 'init'
     workingDirectory: '$(System.DefaultWorkingDirectory)/kubernetes'
     backendType: 'azurerm'
-    backendServiceArm: 'resource-manager-service-connection'
+    backendServiceArm: 'terraform-aks-azurerm-svc-con'
     backendAzureRmResourceGroupName: 'terraform-backend-rg'
     backendAzureRmResourceGroupLocation: 'westeurope'
     backendAzureRmStorageAccountName: 'stacctvzamudioj'
