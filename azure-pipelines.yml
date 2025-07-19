@@ -42,6 +42,11 @@ steps:
   inputs:
     command: 'validate'
     workingDirectory: '$(System.DefaultWorkingDirectory)/kubernetes'
+- script: |
+    echo "ARM_CLIENT_ID=$ARM_CLIENT_ID"
+    echo "ARM_TENANT_ID=$ARM_TENANT_ID"
+    echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
+  displayName: 'Check SP Environment Variables'
     
 
 - task: TerraformCLI@0
