@@ -49,11 +49,10 @@ steps:
       workingDirectory: "$(System.DefaultWorkingDirectory)/kubernetes"
       environmentServiceName: "terraform-aks-azurerm-svc-con"
       commandOptions: "-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)"
-- task: TerraformCLI@0
-  displayName: "apply"
-  inputs:
-    command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/kubernetes'
-    environmentServiceName: 'terraform-aks-azurerm-svc-con'
-    commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
-
+  - task: TerraformCLI@0
+    displayName: "apply"
+    inputs:
+      command: "apply"
+      workingDirectory: "$(System.DefaultWorkingDirectory)/kubernetes"
+      environmentServiceName: "terraform-aks-azurerm-svc-con"
+      commandOptions: "-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)"
