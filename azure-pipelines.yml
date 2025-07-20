@@ -4,56 +4,56 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+  - main
 
 pool:
-  vmImage: 'ubuntu-latest'
-
+  vmImage: "ubuntu-latest"
 
 steps:
+  - script: echo K8S Terraform Azure!
+    displayName: "Run a one-line script"
 
-- script: echo K8S Terraform Azure!
-  displayName: 'Run a one-line script'
+  - task: DownloadSecureFile@1
+    name: publickey
+    inputs:
+      secureFile: "azure_rsa.pub"
 
+  - task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
+    inputs:
+      terraformVersion: "1.6.6"
 
-- task: DownloadSecureFile@1
-  name: publickey
-  inputs:
-    secureFile: 'azure_rsa.pub'
+  - task: TerraformCLI@2
+    displayName: "Init"
+    inputs:
+      command: "init"
+      workingDirectory: "$(System.DefaultWorkingDirectory)/kubernetes"
+      backendType: "azurerm"
+      backendServiceArm: "terraform-aks-azurerm-svc-con"
+      backendAzureRmResourceGroupName: "terraform-backend-rg"
+      backendAzureRmResourceGroupLocation: "westeurope"
+      backendAzureRmStorageAccountName: "stacctvzamudioj"
+      backendAzureRmContainerName: "stacctvzamudiojc"
+      backendAzureRmKey: "kubernetes-dev.tfstate"
+      allowTelemetryCollection: true
 
-- task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
-  inputs:
-    terraformVersion: '1.6.6'
+  - task: TerraformCLI@2
+    displayName: "Validate"
+    inputs:
+      command: "validate"
+      workingDirectory: "$(System.DefaultWorkingDirectory)/kubernetes"
 
-- task: TerraformCLI@2
-  inputs:
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/kubernetes'
-    backendType: 'azurerm'
-    backendServiceArm: 'terraform-aks-azurerm-svc-con'
-    backendAzureRmResourceGroupName: 'terraform-backend-rg'
-    backendAzureRmResourceGroupLocation: 'westeurope'
-    backendAzureRmStorageAccountName: 'stacctvzamudioj'
-    backendAzureRmContainerName: 'stacctvzamudiojc'
-    backendAzureRmKey: 'kubernetes-dev.tfstate'
-    allowTelemetryCollection: true
-
-- task: TerraformCLI@2
-  inputs:
-    command: 'validate'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/kubernetes'
-- script: |
-    echo "ARM_CLIENT_ID=$ARM_CLIENT_ID"
-    echo "ARM_TENANT_ID=$ARM_TENANT_ID"
-    echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
-  displayName: 'Check SP Environment Variables'
-    
-
+  - task: TerraformCLI@2
+    displayName: "Terraform Plan"
+    inputs:
+      command: "plan"
+      workingDirectory: "$(System.DefaultWorkingDirectory)/kubernetes"
+      environmentServiceName: "terraform-aks-azurerm-svc-con"
+      commandOptions: "-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)"
 - task: TerraformCLI@0
+  displayName: "apply"
   inputs:
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/kubernetes'
     environmentServiceName: 'terraform-aks-azurerm-svc-con'
     commandOptions: '-var client_id=$(client_id) -var client_secret=$(client_secret) -var ssh_public_key=$(publickey.secureFilePath)'
 
-    
